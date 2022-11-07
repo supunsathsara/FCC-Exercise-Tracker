@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 const userSchema = new mongoose.Schema({
-  userName: { type: String, unique: true },
+  username: { type: String, unique: true },
 });
 
 const logSchema = new Schema({
@@ -35,11 +35,11 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/users', (req, res) => {
-  const userName = req.body.username;
-  if (userName == '') {
+  const username = req.body.username;
+  if (username == '') {
     res.send('Please enter a username');
   } else {
-    const newUser = new User({ userName: userName });
+    const newUser = new User({ username: username });
     newUser.save((err, data) => {
       if (err) {
         if (err.name === 'MongoServerError' && err.code === 11000) {
@@ -48,7 +48,7 @@ app.post('/api/users', (req, res) => {
           res.json({ error: 'Unable to create user' });
         }
       } else {
-        res.json({ username: data.userName, _id: data._id });
+        res.json({ username: data.username, _id: data._id });
       }
     });
   }
@@ -92,7 +92,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
             res.json({ error: 'Unable to create log' });
           } else {
             res.json({
-              username: userData.userName,
+              username: userData.username,
               description: data.description,
               duration: data.duration,
               _id: data.userId,
@@ -139,12 +139,12 @@ app.get('/api/users/:_id/logs', (req, res) => {
               logArr.push({
                 description: data[i].description,
                 duration: data[i].duration,
-                date: new Date(data[i].date).toUTCString().slice(0, 16),
+                date: new Date(data[i].date).toDateString().slice(0, 16),
               });
             }
             res.json({
               _id: userId,
-              username: userData.userName,
+              username: userData.username,
               count: data.length,
               log: [...logArr],
             });
