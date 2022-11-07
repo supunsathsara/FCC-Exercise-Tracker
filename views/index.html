@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercise Tracker | freeCodeCamp</title>
+    <link
+      rel="shortcut icon"
+      href="https://cdn.freecodecamp.org/universal/favicons/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Exercise tracker</h1>
+      <form action="/api/users" method="post">
+        <h3>Create a New User</h3>
+        <p><code>POST /api/users</code></p>
+        <input id="uname" type="text" name="username" placeholder="username" />
+        <input type="submit" value="Submit" />
+      </form>
+      <form id="exercise-form" method="post">
+        <h3>Add exercises</h3>
+        <p><code>POST /api/users/:_id/exercises</code></p>
+        <input id="uid" type="text" name=":_id" placeholder=":_id" />
+        <input
+          id="desc"
+          type="text"
+          name="description"
+          placeholder="description*"
+        />
+        <input
+          id="dur"
+          type="text"
+          name="duration"
+          placeholder="duration* (mins.)"
+        />
+        <input
+          id="date"
+          type="text"
+          name="date"
+          placeholder="date (yyyy-mm-dd)"
+        />
+        <input type="submit" value="Submit" />
+      </form>
+      <form id="Create-Query">
+        <h3>Create Query</h3>
+        <input type="text" name="id" placeholder="_id" />
+        <input type="text" name="from" placeholder="From (yyyy-mm-dd)" />
+        <input type="text" name="to" placeholder="To (yyyy-mm-dd)" />
+        <input type="text" name="limit" placeholder="Limit" />
+        <input type="submit" value="Submit" />
+
+        <div id="query-result" style="display: none">
+          <h3>Query Result</h3>
+        </div>
+      </form>
+      <p>
+        <strong>GET user's exercise log: </strong>
+        <code>GET /api/users/:_id/logs?[from][&amp;to][&amp;limit]</code>
+      </p>
+      <p><strong>[ ]</strong> = optional</p>
+      <p>
+        <strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> =
+        number
+      </p>
+    </div>
+    <footer>
+      <hr />
+      <p>
+        By
+        <a href="https://www.supunsathsara.com">Supun Sathsara</a>
+        <br />for freeCodeCamp Back End Development and APIs Projects <br />
+      </p>
+    </footer>
+    <script>
+      const exerciseForm = document.getElementById('exercise-form');
+
+      exerciseForm.addEventListener('submit', () => {
+        const userId = document.getElementById('uid').value;
+        exerciseForm.action = `/api/users/${userId}/exercises`;
+
+        exerciseForm.submit();
+      });
+
+      const queryForm = document.getElementById('Create-Query');
+      queryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = queryForm.id.value;
+        const from = queryForm.from.value;
+        const to = queryForm.to.value;
+        const limit = queryForm.limit.value;
+        const resultdiv = document.getElementById('query-result');
+        resultdiv.style.display = 'block';
+        resultdiv.innerHTML = `<p><code>GET <a href="/api/users/${id}/logs?form=${from}&to=${to}&limit=${limit}">/api/users/${id}/logs?form=${from}&to=${to}&limit=${limit}</a></code></p>`;
+      });
+    </script>
+  </body>
+</html>
