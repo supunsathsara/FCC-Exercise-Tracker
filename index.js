@@ -142,12 +142,39 @@ app.get('/api/users/:_id/logs', (req, res) => {
                 date: new Date(data[i].date).toDateString().slice(0, 16),
               });
             }
-            res.json({
-              _id: userId,
-              username: userData.username,
-              count: data.length,
-              log: [...logArr],
-            });
+            if (from && to) {
+              res.json({
+                _id: userData._id,
+                username: userData.username,
+                from: new Date(from).toDateString(),
+                to: new Date(to).toDateString(),
+                count: data.length,
+                log: logArr,
+              });
+            } else if (from) {
+              res.json({
+                _id: userData._id,
+                username: userData.username,
+                from: new Date(from).toDateString(),
+                count: data.length,
+                log: logArr,
+              });
+            } else if (to) {
+              res.json({
+                _id: userData._id,
+                username: userData.username,
+                to: new Date(to).toDateString(),
+                count: data.length,
+                log: logArr,
+              });
+            } else {
+              res.json({
+                _id: userId,
+                username: userData.username,
+                count: data.length,
+                log: [...logArr],
+              });
+            }
           }
         }
       );
